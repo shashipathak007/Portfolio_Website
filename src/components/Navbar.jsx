@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Menu, X } from "lucide-react";
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [activeSection, setActiveSection] = useState("home");
@@ -24,7 +24,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
   };
 
   const darkColors = {
-    navBg: "bg-gradient-to-br from-gray-700 to-black",
+    navBg: "bg-gradient-to-br from-gray-800 to-black",
     textPrimary: "text-white",
     textSecondary: "text-gray-300",
     textHover: "hover:text-orange-400",
@@ -34,20 +34,20 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
 
   const colors = darkMode ? darkColors : lightColors;
 
-  const handleNavClick = (itemName) => {
-    setActiveSection(itemName.toLowerCase());
+  const handleNavClick = (name) => {
+    setActiveSection(name.toLowerCase());
     setIsMenuOpen(false);
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full flex justify-center z-50 mt-4">
+    <div className="fixed top-0 left-0 w-full z-50 flex justify-center mt-4">
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`flex items-center justify-center ${colors.navBg} backdrop-blur-lg rounded-2xl px-6 lg:px-10 py-3 shadow-lg`}
+        className={`${colors.navBg} backdrop-blur-lg rounded-2xl px-6 lg:px-10 py-3 shadow-lg w-[90%] max-w-6xl`}
       >
-        <div className="flex items-center justify-between w-full space-x-6 lg:space-x-8">
+        <div className="flex items-center justify-between">
 
           {/* Logo */}
           <motion.a
@@ -58,7 +58,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             Portfolio<span className="text-orange-500">.</span>
           </motion.a>
 
-          {/* Navigation Items */}
+          {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-6">
             {navItems.map((item) => (
               <a
@@ -68,13 +68,12 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
                 className="relative"
               >
                 <motion.span
-                  className={`font-medium transition-colors duration-300 ${
+                  whileHover={{ scale: 1.05 }}
+                  className={`font-medium transition-colors ${
                     activeSection === item.name.toLowerCase()
                       ? colors.textActive
                       : colors.textSecondary
                   } ${colors.textHover}`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   {item.name}
                 </motion.span>
@@ -89,16 +88,17 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             ))}
           </div>
 
-          {/* Dark mode toggle + button */}
-          <div className="flex items-center space-x-4">
+          {/* Right Controls */}
+          <div className="flex items-center space-x-3">
+
+            {/* Dark Mode */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleDarkMode}
-              className={`p-2 rounded-full transition-colors ${
+              className={`p-2 rounded-full ${
                 darkMode ? "bg-gray-700" : "bg-gray-200"
               }`}
-              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
               {darkMode ? (
                 <Sun className="w-5 h-5 text-yellow-300" />
@@ -107,18 +107,63 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               )}
             </motion.button>
 
-            {/* Hire Me Button */}
+            {/* Hire Me */}
             <motion.a
               href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`hidden lg:block px-6 py-2 font-semibold rounded-full bg-gradient-to-r ${colors.button} text-white shadow-md hover:shadow-lg transition-shadow`}
+              className={`hidden lg:block px-6 py-2 font-semibold rounded-full bg-gradient-to-r ${colors.button} text-white shadow-md`}
             >
               Hire Me
             </motion.a>
-          </div>
 
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={`p-2 rounded-lg ${
+                  darkMode ? "bg-gray-700" : "bg-gray-200"
+                }`}
+              >
+                {isMenuOpen ? (
+                  <X className={`w-5 h-5 ${colors.textPrimary}`} />
+                ) : (
+                  <Menu className={`w-5 h-5 ${colors.textPrimary}`} />
+                )}
+              </motion.button>
+            </div>
+
+          </div>
         </div>
+
+        {/* Mobile Dropdown */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden mt-4 space-y-4"
+            >
+              {navItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.link}
+                  onClick={() => handleNavClick(item.name)}
+                  className={`block text-center font-medium ${
+                    activeSection === item.name.toLowerCase()
+                      ? colors.textActive
+                      : colors.textSecondary
+                  }`}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </motion.nav>
     </div>
   );
