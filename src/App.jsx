@@ -11,10 +11,20 @@ const App = () => {
       once: false,
       offset: 100
     });
-  })
+    document.documentElement.classList.add('dark')
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode)
+    document.documentElement.classList.toggle('dark')
+  };
   return (
-    <div>
-      <Navbar />
+    <div className={darkMode
+      ? 'bg-linerar-to-br from-gray-900 via-[#0d1829] to-gray-900 min-h-screen'
+      : 'bg-linear-to-br from-gray-50 to-blue-50 min-h-screen'
+    }>
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
     </div>
   )
 }
