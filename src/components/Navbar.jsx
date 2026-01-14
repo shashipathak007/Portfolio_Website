@@ -81,7 +81,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
                 {activeSection === item.name.toLowerCase() && (
                   <motion.div
                     layoutId="navbar-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-linear-to-r from-orange-500 to-amber-500 rounded-full"
                   />
                 )}
               </a>
@@ -112,7 +112,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`hidden lg:block px-6 py-2 font-semibold rounded-full bg-gradient-to-r ${colors.button} text-white shadow-md`}
+              className={`hidden lg:block px-6 py-2 font-semibold rounded-full bg-linear-to-r ${colors.button} text-white shadow-md`}
             >
               Hire Me
             </motion.a>
