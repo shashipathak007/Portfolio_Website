@@ -31,10 +31,7 @@ const App = () => {
     }>
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
       <Hero darkMode={darkMode} />
-      <About darkMode={darkMode} />
-      <Skills darkMode={darkMode} />
-      <Projects darkMode={darkMode} />
-      <Contact darkMode={darkMode} />
+      
     </div>
   )
 }
